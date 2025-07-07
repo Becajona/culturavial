@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Parquímetro Municipal</title>
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Font Awesome para iconos -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-pEMXkpLtTkiZeXak+Ro2GPiZq33/OarBnVPpmhqAHaoTh20yUtYe8wOzjLWXRC6qSQi70YGy3aBoTAT+XJd5Vg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- Reset básico -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">🚗 Vialidad</div>
+    <nav class="sidebar__nav">
+      <a href="#" class="active"><i class="fa-solid fa-user"></i> Mi perfil</a>
+      <a href="#"><i class="fa-solid fa-bell"></i> Notificaciones</a>
+      <a href="#"><i class="fa-solid fa-gear"></i> Preferencias</a>
+      <a href="#"><i class="fa-solid fa-shield"></i> Seguridad</a>
+      <a href="#"><i class="fa-solid fa-plug"></i> Integraciones</a>
+      <a href="#"><i class="fa-solid fa-circle-question"></i> Ayuda</a>
+    </nav>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <header class="main-content__header">
+      <h1>Parquímetro Municipal</h1>
+      <button id="toggle-theme" class="theme-toggle" title="Cambiar tema">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </header>
+
+    <!-- Temporizador con progreso circular -->
+    <section class="card timer-card">
+      <div class="progress-circle">
+        <svg><circle cx="100" cy="100" r="90"/></svg>
+        <div class="timer-display" id="timer">00:00</div>
+      </div>
+      <div class="timer-controls">
+        <button id="add"><i class="fa-solid fa-plus"></i> 1 Min</button>
+        <button id="start"><i class="fa-solid fa-play"></i> Iniciar</button>
+        <button id="reset"><i class="fa-solid fa-rotate-right"></i> Reiniciar</button>
+      </div>
+      <div class="cost-display">
+        <label for="zone">Zona:</label>
+        <select id="zone">
+          <option value="1.5">Centro – 1.5 MXN/min</option>
+          <option value="2">Residencial – 2 MXN/min</option>
+          <option value="3">Comercial – 3 MXN/min</option>
+        </select>
+        <div class="cost-text">Costo estimado: <strong id="cost">0.00</strong> MXN</div>
+      </div>
+    </section>
+
+    <!-- Formulario de vehículo -->
+    <section class="card profile-form">
+      <h2>Información del vehículo</h2>
+      <form>
+        <div class="form-group">
+          <label for="placa">Placa</label>
+          <input type="text" id="placa" placeholder="ABC-1234">
+        </div>
+        <div class="form-group">
+          <label for="modelo">Modelo</label>
+          <input type="text" id="modelo" placeholder="Marca y modelo">
+        </div>
+        <div class="form-group">
+          <label for="color">Color</label>
+          <input type="text" id="color" placeholder="Color del vehículo">
+        </div>
+        <div class="form-group">
+          <label for="propietario">Propietario</label>
+          <input type="text" id="propietario" placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" placeholder="55 1234 5678">
+        </div>
+        <button type="submit" class="btn-submit">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar datos
+        </button>
+      </form>
+    </section>
+
+    <!-- Historial persistente -->
+    <section class="card history">
+      <h2>Historial de sesiones</h2>
+      <ul id="history-list"></ul>
+      <button id="clear-history" class="btn-clear">Limpiar historial</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
