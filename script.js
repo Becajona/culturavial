@@ -22,6 +22,24 @@ if (localStorage.getItem('pm_theme') === 'dark') {
 renderHistory();
 updateDisplay();
 
+// Inicializa el mapa
+const map = L.map('map').setView([19.0414395, -98.2062728], 14); // Cambia por coordenadas de tu ciudad
+
+// Añade capa de OpenStreetMap
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+// Añade marcadores de zonas
+L.marker([19.0414395, -98.2062728]).addTo(map)
+  .bindPopup('<b>Zona Centro</b><br>1.5 MXN/min').openPopup();
+
+L.marker([19.045, -98.21]).addTo(map)
+  .bindPopup('<b>Zona Residencial</b><br>2 MXN/min');
+
+L.marker([19.038, -98.200]).addTo(map)
+  .bindPopup('<b>Zona Comercial</b><br>3 MXN/min');
+
 // Funciones
 function updateDisplay() {
   const mins = Math.floor(totalSeconds/60);
@@ -102,4 +120,4 @@ toggleTheme.onclick = () => {
   localStorage.setItem('pm_theme', mode);
 };
 
-zoneSelect.onchange = updateDisplay;    
+zoneSelect.onchange = updateDisplay;

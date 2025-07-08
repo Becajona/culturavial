@@ -17,6 +17,15 @@
     referrerpolicy="no-referrer"
   />
 
+  <!-- Leaflet CSS y JS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+  <script
+    src="https://unpkg.com/leaflet/dist/leaflet.js">
+  </script>
+
   <!-- Reset básico -->
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -97,6 +106,12 @@
           <i class="fa-solid fa-floppy-disk"></i> Guardar datos
         </button>
       </form>
+    </section>
+
+     <!-- Mapa Leaflet -->
+<section class="card map-section">
+      <h2>Zonas de Parquímetro</h2>
+      <div id="map" style="height: 400px; border-radius:8px;"></div>
     </section>
 
     <!-- Historial persistente -->
