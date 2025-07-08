@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notificaciones – Vialidad</title>
+
+  <!-- Estilos compartidos -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Font Awesome para iconos -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-pEMXkpLtTkiZeXak+Ro2GPiZq33/OarBnVPpmhqAHaoTh20yUtYe8wOzjLWXRC6qSQi70YGy3aBoTAT+XJd5Vg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- Reset básico -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">🚗 Vialidad</div>
+    <nav class="sidebar__nav">
+      <a href="index.html"><i class="fa-solid fa-clock"></i> Temporizador</a>
+      <a href="notifications.html" class="active"><i class="fa-solid fa-bell"></i> Notificaciones</a>
+      <a href="profile.html"><i class="fa-solid fa-user"></i> Perfil</a>
+      <a href="history.html"><i class="fa-solid fa-list"></i> Historial</a>
+      <a href="settings.html"><i class="fa-solid fa-gear"></i> Ajustes</a>
+    </nav>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <header class="main-content__header">
+      <h1>Notificaciones</h1>
+      <button id="clear-all" class="btn-clear"><i class="fa-solid fa-trash"></i> Limpiar todo</button>
+    </header>
+
+    <section class="card notifications-card">
+      <ul id="notifications-list" class="notifications-list">
+        <!-- Ejemplos de notificaciones -->
+        <li><i class="fa-solid fa-exclamation-circle"></i> Tu tiempo está por expirar en 1 min.</li>
+        <li><i class="fa-solid fa-check-circle"></i> Se añadió 1 minuto al temporizador.</li>
+        <li><i class="fa-solid fa-info-circle"></i> Tarifa de zona Centro actualizada a 1.5 MXN/min.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    // Limpia todas las notificaciones al hacer clic
+    document.getElementById('clear-all').onclick = () => {
+      document.getElementById('notifications-list').innerHTML = '';
+    };
+  </script>
+</body>
+</html>
