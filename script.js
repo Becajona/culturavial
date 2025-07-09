@@ -73,6 +73,27 @@ function addHistory(minutes, cost) {
   renderHistory();
 }
 
+function lanzarNotificacion(titulo, mensaje) {
+  if (Notification.permission === 'granted') {
+    new Notification(titulo, { body: mensaje });
+  } else {
+    alert(mensaje); // fallback si no dio permiso
+  }
+}
+
+// Verifica soporte y pide permiso al usuario
+if ('Notification' in window && Notification.permission !== 'granted') {
+  Notification.requestPermission().then(permission => {
+    console.log('Permiso de notificaciones:', permission);
+  });
+}
+
+document.getElementById('enable-notifs').onclick = () => {
+  Notification.requestPermission().then(permission => {
+    alert('Permiso de notificaciones: ' + permission);
+  });
+};
+
 // Events
 addBtn.onclick = () => {
   totalSeconds += 60;
@@ -82,15 +103,26 @@ addBtn.onclick = () => {
 
 startBtn.onclick = () => {
   if (intervalId) return;
+
   intervalId = setInterval(() => {
     if (totalSeconds > 0) {
       totalSeconds--;
       updateDisplay();
+
+      // 🚨 Avisar cuando falten 5 minutos (300 seg)
+      if (totalSeconds === 300) {
+        lanzarNotificacion(
+          'Parquímetro - Aviso',
+          '⏳ Quedan 5 minutos para que expire tu parquímetro.'
+        );
+      }
+
     } else {
       clearInterval(intervalId);
       intervalId = null;
-      const mins = Math.floor(initialSeconds/60);
+      const mins = Math.floor(initialSeconds / 60);
       addHistory(mins, (mins * parseFloat(zoneSelect.value)).toFixed(2));
+      lanzarNotificacion('Parquímetro', '¡⏰ Tu tiempo de parquímetro ha terminado!');
       alert('¡Tiempo terminado!');
     }
   }, 1000);
