@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Centro de Ayuda – Vialidad</title>
+
+  <!-- Estilos compartidos -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Font Awesome para iconos -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-pEMXkpLtTkiZeXak+Ro2GPiZq33/OarBnVPpmhqAHaoTh20yUtYe8wOzjLWXRC6qSQi70YGy3aBoTAT+XJd5Vg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- Reset básico (igual que en tus otras páginas) -->
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:Arial,sans-serif;}
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">🚗 Vialidad</div>
+    <nav class="sidebar__nav">
+      <a href="index.html"><i class="fa-solid fa-clock"></i> Temporizador</a>
+      <a href="notifications.html"><i class="fa-solid fa-bell"></i> Notificaciones</a>
+      <a href="profile.html"><i class="fa-solid fa-user"></i> Mi perfil</a>
+      <a href="#"><i class="fa-solid fa-gear"></i> Preferencias</a>
+      <a href="#"><i class="fa-solid fa-shield"></i> Seguridad</a>
+      <a href="#"><i class="fa-solid fa-plug"></i> Integraciones</a>
+      <a href="ayuda.html" class="active"><i class="fa-solid fa-circle-question"></i> Ayuda</a>
+    </nav>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <header class="main-content__header">
+      <h1>Centro de Ayuda</h1>
+      <button id="toggle-theme" class="theme-toggle" title="Cambiar tema">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </header>
+
+    <!-- ===============================================
+         1. Guía rápida
+    ================================================ -->
+    <section class="card help-guide">
+      <h2>Guía rápida</h2>
+      <ol style="line-height:1.6">
+        <li>Selecciona la <strong>zona</strong> en el mapa de la página principal.</li>
+        <li>Presiona <em>Iniciar</em> para arrancar el temporizador.</li>
+        <li>Agrega más tiempo con <em>+1&nbsp;Min</em> cuando lo necesites.</li>
+        <li>Al finalizar, pulsa <em>Reiniciar</em> para guardar la sesión en tu historial y ver el costo.</li>
+      </ol>
+      <p style="margin-top:1rem;font-size:.85rem;opacity:.8;">
+        Consejo: el temporizador sigue funcionando aunque cierres la pestaña, siempre que mantengas el navegador abierto.
+      </p>
+    </section>
+
+    <!-- ===============================================
+         2. Preguntas frecuentes
+    ================================================ -->
+    <section class="card help-faq">
+      <h2>Preguntas frecuentes</h2>
+
+      <input type="search" id="faq-search" placeholder="Buscar…" style="width:100%;padding:8px;border-radius:8px;border:1px solid #ccc;margin-bottom:1rem;">
+
+      <details open>
+        <summary>¿Cómo se calcula la tarifa?</summary>
+        <p>La app multiplica los minutos completos de estacionamiento por la tarifa de la zona seleccionada. Ejemplo: 12&nbsp;min × $2.00 = $24.00 MXN.</p>
+      </details>
+
+      <details>
+        <summary>¿Qué sucede si mi tiempo expira?</summary>
+        <p>Recibirás una notificación inmediata. El sistema añadirá la sesión al historial y podrás reiniciar el temporizador si aún necesitas más tiempo.</p>
+      </details>
+
+      <details>
+        <summary>¿Puedo pausar el temporizador?</summary>
+        <p>No por ahora. Estamos trabajando en esta función para próximas versiones.</p>
+      </details>
+
+      <details>
+        <summary>¿Dónde se guarda mi historial?</summary>
+        <p>En el almacenamiento local de tu dispositivo (<em>localStorage</em>). No se envía información a servidores externos.</p>
+      </details>
+
+      <details>
+        <summary>¿Cómo cambio al modo oscuro?</summary>
+        <p>Haz clic en el ícono de luna/sol en la esquina superior derecha de cualquier página. La preferencia se guarda y se aplica la próxima vez que abras la app.</p>
+      </details>
+    </section>
+
+    <!-- ===============================================
+         3. Glosario de iconos
+    ================================================ -->
+    <section class="card help-icons">
+      <h2>Glosario de iconos</h2>
+      <div class="icon-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;text-align:center;">
+        <div><span class="icon" style="font-size:1.8rem;">⏰</span><p>Temporizador</p></div>
+        <div><span class="icon" style="font-size:1.8rem;">🔔</span><p>Notificaciones</p></div>
+        <div><span class="icon" style="font-size:1.8rem;">👤</span><p>Perfil</p></div>
+        <div><span class="icon" style="font-size:1.8rem;">⚙️</span><p>Preferencias</p></div>
+        <div><span class="icon" style="font-size:1.8rem;">🛡️</span><p>Seguridad</p></div>
+        <div><span class="icon" style="font-size:1.8rem;">🔌</span><p>Integraciones</p></div>
+        <div><span class="icon" style="font-size:1.8rem;">❓</span><p>Ayuda</p></div>
+      </div>
+    </section>
+
+    <!-- ===============================================
+         4. Contacto y soporte
+    ================================================ -->
+    <section class="card help-contact">
+      <h2>Contacto y soporte</h2>
+      <p>¿Tienes dudas, sugerencias o encontraste un error?</p>
+      <ul style="margin-top:.5rem;line-height:1.8;">
+        <li>📧 &nbsp;Escríbenos a <a href="mailto:soporte@parquimetro.mx">soporte@parquimetro.mx</a></li>
+        <li>📱 &nbsp;WhatsApp: <a href="https://wa.me/522221234567" target="_blank">+52&nbsp;222&nbsp;123&nbsp;4567</a> (lun-vie 9-18&nbsp;h)</li>
+      </ul>
+      <p style="margin-top:1rem;font-size:.85rem;opacity:.8;">
+        Tiempo de respuesta estimado: 24&nbsp;h hábiles.
+      </p>
+    </section>
+  </main>
+
+  <!-- ========== Scripts específicos ========== -->
+  <script>
+    /* -------- Alternar tema (misma lógica que en index.html) -------- */
+    const toggleTheme = document.getElementById('toggle-theme');
+    toggleTheme.onclick = () => {
+      document.body.classList.toggle('dark');
+      const mode = document.body.classList.contains('dark') ? 'dark' : 'light';
+      localStorage.setItem('pm_theme', mode);
+    };
+    if (localStorage.getItem('pm_theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
+
+    /* -------- Filtro de FAQ en tiempo real -------- */
+    const faqSearch = document.getElementById('faq-search');
+    faqSearch.addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+      document.querySelectorAll('.help-faq details').forEach(det => {
+        const summary = det.querySelector('summary').textContent.toLowerCase();
+        const text    = det.textContent.toLowerCase();
+        det.style.display = (summary.includes(term) || text.includes(term)) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
