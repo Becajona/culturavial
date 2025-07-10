@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Integraciones – Vialidad</title>
+
+  <!-- Estilos compartidos -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Font Awesome para iconos -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-pEMXkpLtTkiZeXak+Ro2GPiZq33/OarBnVPpmhqAHaoTh20yUtYe8wOzjLWXRC6qSQi70YGy3aBoTAT+XJd5Vg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- Reset básico -->
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:Arial,sans-serif;}
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">🚗 Vialidad</div>
+    <nav class="sidebar__nav">
+      <a href="index.html"><i class="fa-solid fa-clock"></i> Temporizador</a>
+      <a href="notifications.html"><i class="fa-solid fa-bell"></i> Notificaciones</a>
+      <a href="profile.html"><i class="fa-solid fa-user"></i> Mi perfil</a>
+      <a href="#"><i class="fa-solid fa-gear"></i> Preferencias</a>
+      <a href="#"><i class="fa-solid fa-shield"></i> Seguridad</a>
+      <a href="integraciones.html" class="active"><i class="fa-solid fa-plug"></i> Integraciones</a>
+      <a href="ayuda.html"><i class="fa-solid fa-circle-question"></i> Ayuda</a>
+    </nav>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <header class="main-content__header">
+      <h1>Integraciones</h1>
+      <button id="toggle-theme" class="theme-toggle" title="Cambiar tema">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </header>
+
+    <!-- ===============================================
+         1. Pagos digitales
+    ================================================ -->
+    <section class="card">
+      <h2>Pagos en línea</h2>
+      <p>Próximamente podrás pagar tu tiempo de estacionamiento usando servicios como Mercado Pago o Stripe sin necesidad de efectivo.</p>
+    </section>
+
+    <!-- ===============================================
+         2. Notificaciones avanzadas
+    ================================================ -->
+    <section class="card">
+      <h2>Notificaciones avanzadas</h2>
+      <p>Activa alertas por SMS, correo electrónico o Telegram para saber cuándo tu tiempo está por expirar y evitar multas.</p>
+    </section>
+
+    <!-- ===============================================
+         3. Mapas y GPS
+    ================================================ -->
+    <section class="card">
+      <h2>Mapas y GPS</h2>
+      <p>Conéctate con Waze o Google Maps para ubicar tu coche en tiempo real y recibir indicaciones para volver fácilmente a tu lugar de estacionamiento.</p>
+    </section>
+
+    <!-- ===============================================
+         4. Exportación de datos
+    ================================================ -->
+    <section class="card">
+      <h2>Exportación de datos</h2>
+      <p>Descarga tu historial de estacionamiento en formato PDF o sincronízalo con Google Sheets para llevar un control detallado de tus gastos.</p>
+    </section>
+
+    <!-- ===============================================
+         5. API pública (futuro)
+    ================================================ -->
+    <section class="card">
+      <h2>Próximas integraciones</h2>
+      <p>Estamos trabajando en ofrecer una API pública para que desarrolladores puedan crear nuevas funcionalidades o conectarse con sistemas externos.</p>
+    </section>
+  </main>
+
+  <!-- ========== Scripts específicos ========== -->
+  <script>
+    // Alternar tema claro/oscuro igual que en otras páginas
+    const toggleTheme = document.getElementById('toggle-theme');
+    toggleTheme.onclick = () => {
+      document.body.classList.toggle('dark');
+      const mode = document.body.classList.contains('dark') ? 'dark' : 'light';
+      localStorage.setItem('pm_theme', mode);
+    };
+    if (localStorage.getItem('pm_theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
+  </script>
+</body>
+</html>
