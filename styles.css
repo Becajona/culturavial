@@ -208,6 +208,17 @@ body {
 
 .btn-submit i { margin-right: 6px; }
 
+.btn-export {
+  margin-top: 12px;
+  padding: 10px 20px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: bold;
+}
+
 /* Historial */
 .history h2 {
   font-size: 1.2rem;

@@ -9,6 +9,7 @@ const costEl      = document.getElementById('cost');
 const historyUl   = document.getElementById('history-list');
 const clearHist   = document.getElementById('clear-history');
 const toggleTheme = document.getElementById('toggle-theme');
+const exportPdfBtn = document.getElementById('export-pdf');
 
 let totalSeconds   = 0;
 let initialSeconds = 0;
@@ -153,3 +154,69 @@ toggleTheme.onclick = () => {
 };
 
 zoneSelect.onchange = updateDisplay;
+
+exportPdfBtn.onclick = () => {
+  if (history.length === 0) {
+    alert('No hay historial para exportar.');
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  // Paleta de colores corporativa
+  const primaryColor = [30, 136, 229]; // Azul
+  const secondaryColor = [240, 240, 240];
+
+  // Encabezado con logo (opcional)
+  doc.setFillColor(...primaryColor);
+  doc.rect(0, 0, doc.internal.pageSize.width, 40, 'F');
+
+  doc.setFontSize(20);
+  doc.setTextColor(255, 255, 255);
+  doc.text('Parquímetro Municipal', doc.internal.pageSize.width / 2, 25, { align: 'center' });
+
+  // Subtítulo
+  doc.setFontSize(12);
+  doc.setTextColor(0);
+  doc.text(`Comprobante de uso - ${new Date().toLocaleDateString()}`, 14, 50);
+
+  // Tabla con historial
+  const tableData = history.map(item => {
+    const partes = item.split(' — ');
+    return [partes[0], partes[1], partes[2]];
+  });
+
+  doc.autoTable({
+    startY: 60,
+    head: [['Fecha y hora', 'Duración', 'Costo']],
+    body: tableData,
+    theme: 'grid',
+    headStyles: {
+      fillColor: primaryColor,
+      textColor: 255,
+      fontStyle: 'bold'
+    },
+    bodyStyles: {
+      fillColor: [255, 255, 255],
+      textColor: [0, 0, 0],
+    },
+    alternateRowStyles: {
+      fillColor: secondaryColor
+    },
+    styles: {
+      fontSize: 10,
+      cellPadding: 4,
+      halign: 'center'
+    },
+    didDrawPage: function (data) {
+      // Pie de página elegante
+      const pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text('Gracias por usar nuestro servicio de parquímetro.', doc.internal.pageSize.width / 2, pageHeight - 10, { align: 'center' });
+    }
+  });
+
+  doc.save('Comprobante_Parquimetro.pdf');
+};
