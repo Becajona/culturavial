@@ -83,34 +83,35 @@
     </section>
 
     <!-- Formulario de vehículo -->
-    <section class="card profile-form">
-      <h2>Información del vehículo</h2>
-      <form>
-        <div class="form-group">
-          <label for="placa">Placa</label>
-          <input type="text" id="placa" placeholder="ABC-1234">
-        </div>
-        <div class="form-group">
-          <label for="modelo">Modelo</label>
-          <input type="text" id="modelo" placeholder="Marca y modelo">
-        </div>
-        <div class="form-group">
-          <label for="color">Color</label>
-          <input type="text" id="color" placeholder="Color del vehículo">
-        </div>
-        <div class="form-group">
-          <label for="propietario">Propietario</label>
-          <input type="text" id="propietario" placeholder="Nombre completo">
-        </div>
-        <div class="form-group">
-          <label for="telefono">Teléfono</label>
-          <input type="tel" id="telefono" placeholder="55 1234 5678">
-        </div>
-        <button type="submit" class="btn-submit">
-          <i class="fa-solid fa-floppy-disk"></i> Guardar datos
-        </button>
-      </form>
-    </section>
+<section class="card profile-form">
+  <h2>Información del vehículo</h2>
+  <form id="vehiculoForm">
+    <div class="form-group">
+      <label for="placa">Placa</label>
+      <input type="text" id="placa" placeholder="ABC-1234">
+    </div>
+    <div class="form-group">
+      <label for="modelo">Modelo</label>
+      <input type="text" id="modelo" placeholder="Marca y modelo">
+    </div>
+    <div class="form-group">
+      <label for="color">Color</label>
+      <input type="text" id="color" placeholder="Color del vehículo">
+    </div>
+    <div class="form-group">
+      <label for="propietario">Propietario</label>
+      <input type="text" id="propietario" placeholder="Nombre completo">
+    </div>
+    <div class="form-group">
+      <label for="telefono">Teléfono</label>
+      <input type="tel" id="telefono" placeholder="55 1234 5678">
+    </div>
+    <button type="submit" class="btn-submit">
+      <i class="fa-solid fa-floppy-disk"></i> Guardar datos
+    </button>
+  </form>
+</section>
+
 
      <!-- Mapa Leaflet -->
 <section class="card map-section">
@@ -126,10 +127,117 @@
       <button id="clear-history" class="btn-clear">Limpiar historial</button>
     </section>
 
+
   </main>
+
+  
+  <script>
+  async function cargarHistorialVehiculos() {
+    const lista = document.getElementById("history-list");
+    lista.innerHTML = "";
+
+    try {
+      const snapshot = await db.collection("vehiculos").orderBy("fechaRegistro", "desc").get();
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement("li");
+        li.textContent = `🚗 ${data.placa} - ${data.modelo} (${data.color}) registrado el ${data.fechaRegistro}`;
+        lista.appendChild(li);
+      });
+    } catch (error) {
+      console.error("Error cargando historial:", error);
+    }
+  }
+
+  // Cargar historial al abrir la página
+  window.addEventListener("DOMContentLoaded", cargarHistorialVehiculos);
+</script>
+
+
+<script>
+  document.getElementById("clear-history").addEventListener("click", async () => {
+  const confirmacion = confirm("¿Estás seguro de que deseas eliminar todo el historial?");
+  if (!confirmacion) return;
+
+  const snapshot = await db.collection("vehiculos").get();
+  const batch = db.batch();
+
+  snapshot.forEach(doc => {
+    batch.delete(doc.ref);
+  });
+
+  await batch.commit();
+  alert("Historial eliminado.");
+  document.getElementById("history-list").innerHTML = "";
+});
+
+</script>
+
+
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
   <script src="script.js"></script>
+
+
+<!-- Firebase SDKs (si no lo has puesto ya) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBj-RYATrlO_uh9wrv6lv5eQ0bGg3u0J_U",
+    authDomain: "soborsculturavial.firebaseapp.com",
+    projectId: "soborsculturavial",
+    storageBucket: "soborsculturavial.appspot.com",
+    messagingSenderId: "111508775675",
+    appId: "1:111508775675:web:11e1213a7aec9400d1065e"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
+
+  <script>
+  const formVehiculo = document.getElementById("vehiculoForm");
+
+  formVehiculo.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const placa = document.getElementById("placa").value.trim();
+    const modelo = document.getElementById("modelo").value.trim();
+    const color = document.getElementById("color").value.trim();
+    const propietario = document.getElementById("propietario").value.trim();
+    const telefono = document.getElementById("telefono").value.trim();
+
+    if (!placa || !modelo || !color || !propietario || !telefono) {
+      alert("Por favor llena todos los campos.");
+      return;
+    }
+
+    try {
+      await db.collection("vehiculos").add({
+        placa,
+        modelo,
+        color,
+        propietario,
+        telefono,
+        fechaRegistro: new Date().toLocaleString()
+      });
+
+      alert("✅ Vehículo guardado correctamente.");
+      formVehiculo.reset();
+    } catch (error) {
+      console.error("❌ Error al guardar vehículo:", error);
+      alert("Ocurrió un error al guardar.");
+    }
+  });
+</script>
+
+
+
+
 </body>
 </html>
