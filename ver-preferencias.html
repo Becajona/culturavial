@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Parquímetro Municipal - Ver Preferencias</title>
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: #222;
+      color: white;
+      width: 240px;
+      padding: 1rem;
+    }
+
+    .sidebar__logo {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .sidebar__nav a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+
+    .sidebar__nav a:hover,
+    .sidebar__nav a.active {
+      background: #444;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      background: #f2f2f2;
+      overflow-x: auto;
+    }
+
+    .main-content__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .main-content__header h1 {
+      font-size: 1.6rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+    }
+
+    th, td {
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    th {
+      background: #008CBA;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .btn-volver {
+      background-color: #ccc;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .main-content__header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">🚗 Vialidad</div>
+    <nav class="sidebar__nav">
+      <a href="index.html"><i class="fa-solid fa-clock"></i> Temporizador</a>
+      <a href="notifications.html"><i class="fa-solid fa-bell"></i> Notificaciones</a>
+      <a href="perfil.html"><i class="fa-solid fa-user"></i> Mi perfil</a>
+      <a href="preferencias.html"><i class="fa-solid fa-gear"></i> Preferencias</a>
+      <a href="#" class="active"><i class="fa-solid fa-database"></i> Ver datos</a>
+      <a href="integraciones.html"><i class="fa-solid fa-plug"></i> Integraciones</a>
+      <a href="ayuda.html"><i class="fa-solid fa-circle-question"></i> Ayuda</a>
+    </nav>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <header class="main-content__header">
+      <h1><i class="fa-solid fa-database"></i> Datos de Preferencias Guardadas</h1>
+      <a href="preferencias.html" class="btn-volver"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+    </header>
+
+    <table id="tablaPreferencias">
+      <thead>
+        <tr>
+          <th>Franeleros</th>
+          <th>Banquetas</th>
+          <th>Estacionamiento</th>
+          <th>Ubicación</th>
+          <th>Desde</th>
+          <th>Hasta</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Se llenará dinámicamente -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBj-RYATrlO_uh9wrv6lv5eQ0bGg3u0J_U",
+      authDomain: "soborsculturavial.firebaseapp.com",
+      projectId: "soborsculturavial",
+      storageBucket: "soborsculturavial.firebasestorage.app",
+      messagingSenderId: "111508775675",
+      appId: "1:111508775675:web:11e1213a7aec9400d1065e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const tabla = document.querySelector("#tablaPreferencias tbody");
+
+    async function cargarDatos() {
+      const snapshot = await getDocs(collection(db, "preferencias"));
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const fila = `
+          <tr>
+            <td>${data.franeleros || "-"}</td>
+            <td>${data.banquetas || "-"}</td>
+            <td>${data.estacionamiento || "-"}</td>
+            <td>${data.ubicacion || "-"}</td>
+            <td>${data.horaInicio || "-"}</td>
+            <td>${data.horaFin || "-"}</td>
+            <td>${new Date(data.fechaGuardado).toLocaleString("es-MX") || "-"}</td>
+          </tr>`;
+        tabla.innerHTML += fila;
+      });
+    }
+
+    cargarDatos();
+  </script>
+</body>
+</html>

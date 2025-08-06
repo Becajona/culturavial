@@ -8,16 +8,9 @@
   <!-- Estilos compartidos -->
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Font Awesome para iconos -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    integrity="sha512-pEMXkpLtTkiZeXak+Ro2GPiZq33/OarBnVPpmhqAHaoTh20yUtYe8wOzjLWXRC6qSQi70YGy3aBoTAT+XJd5Vg=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Reset básico -->
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; }
@@ -31,10 +24,10 @@
       <a href="index.html"><i class="fa-solid fa-clock"></i> Temporizador</a>
       <a href="notifications.html"><i class="fa-solid fa-bell"></i> Notificaciones</a>
       <a href="profile.html" class="active"><i class="fa-solid fa-user"></i> Mi perfil</a>
-      <a href="settings.html"><i class="fa-solid fa-gear"></i> Preferencias</a>
-      <a href="settings.html"><i class="fa-solid fa-shield"></i> Seguridad</a>
-      <a href="settings.html"><i class="fa-solid fa-plug"></i> Integraciones</a>
-      <a href="settings.html"><i class="fa-solid fa-circle-question"></i> Ayuda</a>
+      <a href="preferencias.html"><i class="fa-solid fa-gear"></i> Preferencias</a>
+      <a href="seguridad.html"><i class="fa-solid fa-shield"></i> Seguridad</a>
+      <a href="integraciones.html"><i class="fa-solid fa-plug"></i> Integraciones</a>
+      <a href="ayuda.html"><i class="fa-solid fa-circle-question"></i> Ayuda</a>
     </nav>
   </aside>
 
@@ -49,7 +42,7 @@
 
     <section class="card profile-form">
       <h2>Información personal</h2>
-      <form>
+      <form id="perfil-form">
         <div class="form-group">
           <label for="nombre">Nombre</label>
           <input type="text" id="nombre" placeholder="Tu nombre">
@@ -85,18 +78,94 @@
     </section>
   </main>
 
-  <script>
-    // Alternar tema igual que en index.html
-    const toggle = document.getElementById('toggle-theme');
-    toggle.onclick = () => {
-      document.body.classList.toggle('dark');
-      const mode = document.body.classList.contains('dark') ? 'dark' : 'light';
-      localStorage.setItem('pm_theme', mode);
-    };
-    // Aplicar tema guardado
-    if (localStorage.getItem('pm_theme') === 'dark') {
-      document.body.classList.add('dark');
+  <!-- Firebase SDK -->
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    getDocs,
+    setDoc,
+    doc
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBj-RYATrlO_uh9wrv6lv5eQ0bGg3u0J_U",
+    authDomain: "soborsculturavial.firebaseapp.com",
+    projectId: "soborsculturavial",
+    storageBucket: "soborsculturavial.firebasestorage.app",
+    messagingSenderId: "111508775675",
+    appId: "1:111508775675:web:11e1213a7aec9400d1065e"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const form = document.getElementById("perfil-form");
+
+  const emailInput = document.getElementById("email");
+
+  // Cargar perfil existente
+  async function cargarPerfil() {
+    const emailGuardado = localStorage.getItem("email_usuario");
+
+    if (!emailGuardado) return;
+
+    const usuariosRef = collection(db, "usuarios");
+    const q = query(usuariosRef, where("email", "==", emailGuardado));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docData = querySnapshot.docs[0].data();
+      document.getElementById("nombre").value = docData.nombre || "";
+      document.getElementById("apellido").value = docData.apellido || "";
+      document.getElementById("email").value = docData.email || "";
+      document.getElementById("telefono").value = docData.telefono || "";
+      document.getElementById("cargo").value = docData.cargo || "";
+      document.getElementById("departamento").value = docData.departamento || "";
+      document.getElementById("ubicacion").value = docData.ubicacion || "";
     }
-  </script>
+  }
+
+  // Guardar o actualizar perfil
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombre").value;
+    const apellido = document.getElementById("apellido").value;
+    const email = document.getElementById("email").value;
+    const telefono = document.getElementById("telefono").value;
+    const cargo = document.getElementById("cargo").value;
+    const departamento = document.getElementById("departamento").value;
+    const ubicacion = document.getElementById("ubicacion").value;
+
+    // Guardar el email en localStorage como "login"
+    localStorage.setItem("email_usuario", email);
+
+    try {
+      await setDoc(doc(db, "usuarios", email), {
+        nombre,
+        apellido,
+        email,
+        telefono,
+        cargo,
+        departamento,
+        ubicacion,
+        fechaActualizado: new Date().toISOString()
+      });
+
+      alert("Perfil guardado correctamente ✅");
+    } catch (error) {
+      console.error("Error al guardar perfil:", error);
+      alert("Hubo un error al guardar el perfil.");
+    }
+  });
+
+  // Ejecutar carga al iniciar
+  cargarPerfil();
+</script>
+
 </body>
 </html>

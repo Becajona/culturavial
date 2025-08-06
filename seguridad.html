@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seguridad – Parquímetro</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+  <style>
+    /* Estilos rápidos para los íconos de visibilidad */
+    .toggle-password {
+      cursor: pointer;
+      position: absolute;
+      right: 10px;
+      top: 38px;
+      transform: translateY(-50%);
+      color: #666;
+    }
+    .password-wrapper {
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">🚗 Vialidad</div>
+    <nav class="sidebar__nav">
+      <a href="index.html"><i class="fa-solid fa-clock"></i> Temporizador</a>
+      <a href="notifications.html"><i class="fa-solid fa-bell"></i> Notificaciones</a>
+      <a href="perfil.html"><i class="fa-solid fa-user"></i> Mi perfil</a>
+      <a href="preferencias.html"><i class="fa-solid fa-gear"></i> Preferencias</a>
+      <a href="#" class="active"><i class="fa-solid fa-shield"></i> Seguridad</a>
+      <a href="integraciones.html"><i class="fa-solid fa-plug"></i> Integraciones</a>
+      <a href="ayuda.html"><i class="fa-solid fa-circle-question"></i> Ayuda</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="main-content__header">
+      <h1><i class="fa-solid fa-shield-halved"></i> Seguridad</h1>
+    </header>
+
+    <!-- Cambio de contraseña -->
+    <section class="card">
+      <h2><i class="fa-solid fa-key"></i> Cambiar contraseña</h2>
+      <div class="form-group password-wrapper">
+        <label for="actual">Contraseña actual</label>
+        <input type="password" id="actual" />
+        <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('actual', this)"></i>
+      </div>
+      <div class="form-group password-wrapper">
+        <label for="nueva">Nueva contraseña</label>
+        <input type="password" id="nueva" />
+        <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('nueva', this)"></i>
+      </div>
+      <div class="form-group password-wrapper">
+        <label for="confirmar">Confirmar nueva contraseña</label>
+        <input type="password" id="confirmar" />
+        <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('confirmar', this)"></i>
+      </div>
+      <button class="btn-submit" onclick="guardarPassword()">
+        <i class="fa-solid fa-lock"></i> Guardar cambios
+      </button>
+    </section>
+  </main>
+
+  <script>
+    // Configuración Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBj-RYATrlO_uh9wrv6lv5eQ0bGg3u0J_U",
+      authDomain: "soborsculturavial.firebaseapp.com",
+      projectId: "soborsculturavial",
+      storageBucket: "soborsculturavial.appspot.com",
+      messagingSenderId: "111508775675",
+      appId: "1:111508775675:web:11e1213a7aec9400d1065e"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function guardarPassword() {
+      const actual = document.getElementById("actual").value;
+      const nueva = document.getElementById("nueva").value;
+      const confirmar = document.getElementById("confirmar").value;
+
+      if (nueva !== confirmar) {
+        alert("❌ Las contraseñas no coinciden");
+        return;
+      }
+
+      db.collection("seguridad").add({
+        contraseñaActual: actual,
+        contraseñaNueva: nueva,
+        fecha: new Date().toLocaleString()
+      })
+      .then(() => {
+        alert("✅ Contraseña guardada correctamente");
+      })
+      .catch(error => {
+        console.error("Error al guardar: ", error);
+        alert("Error al guardar contraseña");
+      });
+    }
+
+    function togglePassword(id, icono) {
+      const input = document.getElementById(id);
+      if (input.type === "password") {
+        input.type = "text";
+        icono.classList.remove("fa-eye");
+        icono.classList.add("fa-eye-slash");
+      } else {
+        input.type = "password";
+        icono.classList.remove("fa-eye-slash");
+        icono.classList.add("fa-eye");
+      }
+    }
+  </script>
+</body>
+</html>

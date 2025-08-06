@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Parquímetro Municipal - Preferencias</title>
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="google-site-verification" content="jBcTaPNzet0G1826RnAs6AFh4KXF6rHJvEJ4ncYYOKQ" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Leaflet (por consistencia con el resto del sistema) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: #222;
+      color: white;
+      width: 240px;
+      padding: 1rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar__logo {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .sidebar__nav a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+
+    .sidebar__nav a:hover,
+    .sidebar__nav a.active {
+      background: #444;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      background: #f2f2f2;
+    }
+
+    .main-content__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .main-content__header h1 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-volver {
+      background-color: #ccc;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-top: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    input[type="text"],
+    input[type="time"],
+    select {
+      width: 100%;
+      padding: 0.6rem;
+      font-size: 1rem;
+      border: 1px solid #bbb;
+      border-radius: 5px;
+    }
+
+    .btn-submit {
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #0072a3;
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding: 1rem;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .main-content__header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .btn-volver {
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div  class="sidebar__logo">🚗 Vialidad</div>
+    <nav class="sidebar__nav">
+      <a href="index.html"><i class="fa-solid fa-clock"></i> Temporizador</a>
+      <a href="notifications.html"><i class="fa-solid fa-bell"></i> Notificaciones</a>
+      <a href="profile.html"><i class="fa-solid fa-user"></i> Mi perfil</a>
+      <a href="preferencias.html" class="active"><i class="fa-solid fa-gear"></i> Preferencias</a>
+      <a href="seguridad.html"><i class="fa-solid fa-shield"></i> Seguridad</a>
+      <a href="integraciones.html"><i class="fa-solid fa-plug"></i> Integraciones</a>
+      <a href="ayuda.html"><i class="fa-solid fa-circle-question"></i> Ayuda</a>
+    </nav>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <header class="main-content__header">
+      <h1><i class="fa-solid fa-sliders"></i> Preferencias de Reportes</h1>
+      <a href="index.html" class="btn-volver"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a>
+    </header>
+
+    <section class="card preferencias-section">
+      <div class="form-group">
+        <label for="franeleros">🛑 Prioridad para franeleros:</label>
+        <select id="franeleros">
+          <option>Alta</option>
+          <option>Media</option>
+          <option>Baja</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="banquetas">🚷 Prioridad para banquetas bloqueadas:</label>
+        <select id="banquetas">
+          <option>Alta</option>
+          <option>Media</option>
+          <option>Baja</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="estacionamiento">🚘 Prioridad para estacionamiento indebido:</label>
+        <select id="estacionamiento">
+          <option>Alta</option>
+          <option>Media</option>
+          <option>Baja</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ubicacion">📍 Ubicación preferida:</label>
+        <input type="text" id="ubicacion" placeholder="Ej. Centro, Puebla" />
+      </div>
+
+      <div class="form-group">
+        <label for="horaInicio">⏰ Hora preferida (desde):</label>
+        <input type="time" id="horaInicio" />
+      </div>
+
+      <div class="form-group">
+        <label for="horaFin">⏳ Hora preferida (hasta):</label>
+        <input type="time" id="horaFin" />
+      </div>
+
+      <div style="text-align: right; margin-top: 1rem;">
+        <button onclick="alert('Preferencias guardadas ✅')" class="btn-submit">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar preferencias
+        </button>
+      </div>
+    </section>
+  </main>
+
+
+  <div style="text-align: left; margin-top: 1rem;">
+  <a href="ver-preferencias.html" class="btn-submit" style="background-color: #6c757d;">
+    <i class="fa-solid fa-eye"></i> Ver datos guardados
+  </a>
+</div>
+
+
+
+
+  <!-- Firebase SDKs -->
+<script type="module">
+  // Importar los módulos de Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // Configuración de tu proyecto
+  const firebaseConfig = {
+    apiKey: "AIzaSyBj-RYATrlO_uh9wrv6lv5eQ0bGg3u0J_U",
+    authDomain: "soborsculturavial.firebaseapp.com",
+    projectId: "soborsculturavial",
+    storageBucket: "soborsculturavial.firebasestorage.app",
+    messagingSenderId: "111508775675",
+    appId: "1:111508775675:web:11e1213a7aec9400d1065e"
+  };
+
+  // Inicializar Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Función para guardar las preferencias
+  async function guardarPreferencias() {
+    const franeleros = document.getElementById("franeleros").value;
+    const banquetas = document.getElementById("banquetas").value;
+    const estacionamiento = document.getElementById("estacionamiento").value;
+    const ubicacion = document.getElementById("ubicacion").value;
+    const horaInicio = document.getElementById("horaInicio").value;
+    const horaFin = document.getElementById("horaFin").value;
+
+    try {
+      await addDoc(collection(db, "preferencias"), {
+        franeleros,
+        banquetas,
+        estacionamiento,
+        ubicacion,
+        horaInicio,
+        horaFin,
+        fechaGuardado: new Date().toISOString()
+      });
+
+      alert("Preferencias guardadas correctamente ✅");
+    } catch (error) {
+      console.error("Error al guardar en Firebase:", error);
+      alert("Hubo un error al guardar. Intenta nuevamente.");
+    }
+  }
+
+  // Escuchar botón de guardar
+  document.querySelector(".btn-submit").addEventListener("click", (e) => {
+    e.preventDefault();
+    guardarPreferencias();
+  });
+</script>
+
+</body>
+</html>
